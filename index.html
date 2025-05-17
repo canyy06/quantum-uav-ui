@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUANTUM UAV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #660000;
+      --secondary: #990000;
+      --accent: #ffffff;
+      --btn-bg: #000000;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      background: var(--primary);
+      color: var(--accent);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at center, #660000 0%, #220000 100%);
+      animation: fadeInUnified 1s ease-in-out forwards;
+    }
+
+    .screen:not(.hidden) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 180px;
+      max-width: 80%;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .hashtag {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #dddddd;
+    }
+
+    button {
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      margin: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #222;
+    }
+
+    .input-group {
+      background-color: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      width: 100%;
+    }
+
+    .status-box {
+      background-color: var(--secondary);
+      padding: 20px;
+      margin: 40px auto;
+      border-radius: 15px;
+      width: 85%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      margin-top: 20px;
+      font-size: 1.4rem;
+    }
+
+    @keyframes fadeInUnified {
+      0% { opacity: 0; transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash" class="screen" onclick="handleFirstClick()">
+    <div class="logo">
+      <img src="quantum_full_logo.png" alt="QUANTUM Full Logo">
+    </div>
+    <p class="hashtag">#yapabileceklerininsınırıyok</p>
+  </div>
+
+  <!-- Ana Sayfa -->
+  <div id="home" class="screen hidden">
+    <div class="top-bar">
+      <button onclick="showScreen('details')">📦 Sipariş Bilgilerim</button>
+      <button onclick="alert('QUANTUM Hakkında: Akıllı Drone Teslimat Sistemi')">ℹ️</button>
+    </div>
+    <div class="status-box">
+      <p><strong>SİPARİŞ DURUMU:</strong> VAR</p>
+      <p><strong>TAHMİNİ VARIŞ:</strong> X DK</p>
+      <img src="drone_path_icon.png" style="width: 80px; margin-top: 15px;">
+    </div>
+    <button onclick="showScreen('create')">SİPARİŞ OLUŞTUR</button>
+  </div>
+
+  <!-- Sipariş Oluşturma -->
+  <div id="create" class="screen hidden">
+    <div class="logo">
+      <img src="quantum_text_logo.png" alt="QUANTUM Text Logo">
+    </div>
+    <div class="input-group">
+      <input type="text" id="name" placeholder="Ad Soyad">
+      <input type="text" id="location" placeholder="Konum">
+      <select id="type">
+        <option value="Mühimmat">Mühimmat</option>
+        <option value="Sağlık">Sağlık</option>
+        <option value="Yiyecek">Yiyecek</option>
+      </select>
+    </div>
+    <button onclick="submitOrder()">KAYDET</button>
+  </div>
+
+  <!-- Sipariş Detayları -->
+  <div id="details" class="screen hidden">
+    <h2>SİPARİŞ DETAYLARI</h2>
+    <p><strong>ALICI:</strong> <span id="d_name"></span></p>
+    <p><strong>GÖNDEREN:</strong> QUANTUMUAV</p>
+    <p><strong>KONUM:</strong> <span id="d_location"></span></p>
+    <p><strong>SİPARİŞ TÜRÜ:</strong> <span id="d_type"></span></p>
+    <button onclick="showScreen('home')">🏠 Ana Sayfa</button>
+  </div>
+
+  <script>
+    let firstClickDone = false;
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function handleFirstClick() {
+      if (!firstClickDone) {
+        showScreen('home');
+        firstClickDone = true;
+      }
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('name').value;
+      const location = document.getElementById('location').value;
+      const type = document.getElementById('type').value;
+
+      if (!name || !location) {
+        alert("Lütfen tüm bilgileri doldurun.");
+        return;
+      }
+
+      document.getElementById('d_name').textContent = name;
+      document.getElementById('d_location').textContent = location;
+      document.getElementById('d_type').textContent = type;
+
+      showScreen('details');
+    }
+
+    showScreen('splash');
+  </script>
+</body>
+</html>
