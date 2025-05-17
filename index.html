@@ -249,8 +249,7 @@
     function completeOrder() {
       if (!hasOrder) return alert("Tamamlanacak sipariş yok.");
       alert("Sipariş başarıyla tamamlandı!");
-      hasOrder = false;
-      ['d_name','d_location','d_type'].forEach(id => document.getElementById(id).textContent = '');
+      // hasOrder değeri değiştirilmiyor, böylece "VAR" kalır
       showScreen('home');
     }
 
