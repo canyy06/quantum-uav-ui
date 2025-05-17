@@ -1,21 +1,18 @@
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
+function cancelOrder() {
+  const name = document.getElementById('d_name').textContent;
+  const location = document.getElementById('d_location').textContent;
+  const type = document.getElementById('d_type').textContent;
 
-function submitOrder() {
-  const name = document.getElementById('name').value;
-  const location = document.getElementById('location').value;
-  const type = document.getElementById('type').value;
-
-  if (!name || !location) {
-    alert("Lütfen tüm bilgileri doldurun.");
+  if (!name && !location && !type) {
+    alert("Herhangi bir sipariş bulunamadı.");
     return;
   }
 
-  document.getElementById('d_name').textContent = name;
-  document.getElementById('d_location').textContent = location;
-  document.getElementById('d_type').textContent = type;
-
-  showScreen('details');
-}
+  const confirmCancel = confirm("Siparişi iptal etmek istediğinizden emin misiniz?");
+  if (confirmCancel) {
+    document.getElementById('d_name').textContent = '';
+    document.getElementById('d_location').textContent = '';
+    document.getElementById('d_type').textContent = '';
+    showScreen('home');
+  }
+} 
