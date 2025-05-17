@@ -139,7 +139,7 @@
     <div class="status-box">
       <p><strong>SİPARİŞ DURUMU:</strong> VAR</p>
       <p><strong>TAHMİNİ VARIŞ:</strong> X DK</p>
-      <img src="drone_path_icon.png" style="width: 80px; margin-top: 15px;">
+      <img src="drone_path_icon.png" style="width: 80px; margin-top: 15px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
     </div>
     <button onclick="showScreen('create')">SİPARİŞ OLUŞTUR</button>
   </div>
@@ -158,7 +158,10 @@
         <option value="Yiyecek">Yiyecek</option>
       </select>
     </div>
-    <button onclick="submitOrder()">KAYDET</button>
+    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <button onclick="submitOrder()" style="flex: 1; min-width: 120px;">KAYDET</button>
+      <button onclick="showScreen('home')" style="flex: 1; min-width: 120px;">GERİ DÖN</button>
+    </div>
   </div>
 
   <!-- Sipariş Detayları -->
@@ -169,6 +172,7 @@
     <p><strong>KONUM:</strong> <span id="d_location"></span></p>
     <p><strong>SİPARİŞ TÜRÜ:</strong> <span id="d_type"></span></p>
     <button onclick="showScreen('home')">🏠 Ana Sayfa</button>
+    <button onclick="cancelOrder()">❌ Siparişi İptal Et</button>
   </div>
 
   <script>
@@ -204,6 +208,26 @@
     }
 
     showScreen('splash');
+
+    function cancelOrder() {
+  const name = document.getElementById('d_name').textContent;
+  const location = document.getElementById('d_location').textContent;
+  const type = document.getElementById('d_type').textContent;
+
+  if (!name && !location && !type) {
+    alert("Herhangi bir sipariş bulunamadı.");
+    return;
+  }
+
+  const confirmCancel = confirm("Siparişi iptal etmek istediğinizden emin misiniz?");
+  if (confirmCancel) {
+    document.getElementById('d_name').textContent = '';
+    document.getElementById('d_location').textContent = '';
+    document.getElementById('d_type').textContent = '';
+    showScreen('home');
+  }
+}
+    }
   </script>
 </body>
 </html>
